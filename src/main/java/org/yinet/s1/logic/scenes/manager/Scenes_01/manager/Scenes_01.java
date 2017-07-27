@@ -23,7 +23,6 @@ import java.util.Map;
  */
 @Service
 public class Scenes_01 extends ScenesAbstract{
-    public static ApplicationContext ctx = null;
     /**场景内所有的玩家*/
     public static List<Channel> user = new ArrayList<>();
     @Autowired

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.yinet.s1.cache.core.UserCache;
 import org.yinet.s1.logic.login.dto.LoginDto;
 import org.yinet.s1.logic.scenes.manager.Scenes_01.manager.Scenes_01;
+import org.yinet.s1.logic.scenes.manager.scenes02.manager.Scenes_02;
 import org.yinet.s1.logic.scenes.manager.scenes02.manager.Scenes_02Banker;
 import org.yinet.s1.net.tcp.model.Response;
 import org.yinet.s1.serializer.protostuffer.ProtostuffUtils;
@@ -25,14 +26,14 @@ public class BankerDownScenes_2 extends Scenes_02Banker {
         if(!this.baner.isEmpty()){
             loginDto = UserCache.playerId.get(this.baner.get(0).getId());
         }
-        response.setId(7);
+        response.setId(10);
         if(loginDto != null) {
             byte[] buf = ProtostuffUtils.serializer(loginDto);
             response.setDATA(buf);
         }else{
             response.setDATA(null);
         }
-        for (Channel channel1: Scenes_01.user) {
+        for (Channel channel1: Scenes_02.user) {
             if(channel1 != channel)
                 channel1.writeAndFlush(response);
         }

@@ -5,9 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.yinet.s1.cache.core.UserCache;
 import org.yinet.s1.logic.login.dto.LoginDto;
+import org.yinet.s1.logic.scenes.Card.ComparisonObj;
 import org.yinet.s1.logic.scenes.manager.Scenes_01.data.CardData;
+import org.yinet.s1.logic.scenes.manager.scenes02.data.CardData02;
 import org.yinet.s1.logic.scenes.model.ScenesManager.ScenesAbstract;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,18 +21,41 @@ import java.util.Map;
  */
 @Service
 public class Scenes_02 extends ScenesAbstract {
+    /**场景内所有的玩家*/
+    public static List<Channel> user = new ArrayList<>();
     @Autowired
     private CardComparisonScenes02 cardComparisonScenes02;
     @Autowired
     private Scenes_02Banker scenes_02Banker;
     @Override
     protected void insert(int[] result) {
-
+        for (int i : result) {
+            CardData02.scene02Card.add(i);
+            CardData02.scene02CardSet.add(ComparisonObj.cardMap.get(i));//添加无重复的牌
+        }
     }
 
     @Override
     public void clear() {
+        if(!scenes_02Banker.baner.isEmpty()) {
+            int i = scenes_02Banker.baner.get(0).getBankerNumber();
+            if(i >= 10){
+                scenes_02Banker.bankerDown(false);
+            }else {
+                i++;
+                scenes_02Banker.baner.get(0).setBankerNumber(i);
+            }
+        }
 
+        CardData02.scene02CardSet.clear();
+        CardData02.scene02Card.clear();
+        cardComparisonScenes02.sceneResult.clear();
+        CardData02.resetMoney();
+        scenes_02Banker.bankerMoney = 0;
+        CardData02.cards1.clear();
+        CardData02.cards2.clear();
+        timer = time;
+        this.end = true;
     }
 
     @Override
@@ -39,19 +66,19 @@ public class Scenes_02 extends ScenesAbstract {
     @Override
     public void doExecutor() {
         //1，发牌 场景1有5堆牌所以发15张牌
-        this.randomCommon(1,53,15);
+        this.randomCommon(1,53,6);
         //2，比牌
         cardComparisonScenes02.playerCard();
         //得到结果 其中发给玩家的5副牌的数据在CardData的scene01CardSet里
         //比完之后玩家是得到的是散还是对子还是顺子的数据在CardComparisonScenes01的sceneResult里
         //发往客户端的牌面CardData.scene04Card
         //3，用户结算
-        if(cardComparisonScenes02.sceneResult.get(5)>0) {
-            settle(CardData.cards1, cardComparisonScenes02.sceneResult.get(1));
+        if(cardComparisonScenes02.sceneResult.get(2)>0) {
+            settle(CardData.cards1, cardComparisonScenes02.sceneResult.get(0));
             sendResult(CardData.cards1);
         }
-        if(cardComparisonScenes02.sceneResult.get(6)>0) {
-            settle(CardData.cards2, cardComparisonScenes02.sceneResult.get(2));
+        if(cardComparisonScenes02.sceneResult.get(3)>0) {
+            settle(CardData.cards2, cardComparisonScenes02.sceneResult.get(1));
             sendResult(CardData.cards2);
         }
     }
