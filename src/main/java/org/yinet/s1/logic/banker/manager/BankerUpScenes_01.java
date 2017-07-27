@@ -1,12 +1,10 @@
 package org.yinet.s1.logic.banker.manager;
 
 import io.netty.channel.Channel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.yinet.s1.cache.core.UserCache;
 import org.yinet.s1.error.AppGeneralError;
 import org.yinet.s1.error.coder.AppErrorCodes;
-import org.yinet.s1.logic.scenes.manager.Scenes_01.manager.Scenes_01;
 import org.yinet.s1.logic.scenes.manager.Scenes_01.manager.Scenes_01Banker;
 
 /**

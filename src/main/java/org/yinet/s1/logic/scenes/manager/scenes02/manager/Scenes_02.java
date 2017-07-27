@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.yinet.s1.cache.core.UserCache;
 import org.yinet.s1.logic.login.dto.LoginDto;
 import org.yinet.s1.logic.scenes.manager.Scenes_01.data.CardData;
-import org.yinet.s1.logic.scenes.manager.Scenes_01.manager.CardComparisonScenes01;
 import org.yinet.s1.logic.scenes.model.ScenesManager.ScenesAbstract;
 
 import java.util.Map;

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.yinet.s1.cache.core.UserCache;
 import org.yinet.s1.logic.login.dto.LoginDto;
 import org.yinet.s1.logic.scenes.manager.Scenes_01.manager.Scenes_01;
-import org.yinet.s1.logic.scenes.manager.Scenes_01.manager.Scenes_01Banker;
 import org.yinet.s1.logic.scenes.manager.scenes02.manager.Scenes_02Banker;
 import org.yinet.s1.net.tcp.model.Response;
 import org.yinet.s1.serializer.protostuffer.ProtostuffUtils;

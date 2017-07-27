@@ -1,7 +1,6 @@
 package org.yinet.s1.logic.banker.manager;
 
 import org.springframework.stereotype.Service;
-import org.yinet.s1.logic.scenes.manager.Scenes_01.manager.Scenes_01Banker;
 import org.yinet.s1.logic.scenes.manager.scenes02.manager.Scenes_02Banker;
 
 /**
