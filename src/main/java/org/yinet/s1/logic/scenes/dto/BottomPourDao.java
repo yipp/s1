@@ -1,4 +1,4 @@
-package org.yinet.s1.logic.scenes.dao;
+package org.yinet.s1.logic.scenes.dto;
 
 import org.yinet.s1.net.tcp.model.RequestSerializer;
 

@@ -9,10 +9,11 @@ import java.util.Arrays;
  */
 public class Main {
     public static void main(String[] args){
-        Object s = new SerializerTest("易","",23,"理工");
-        Object buf = ProtostuffUtils.serializer(s);
+        Test test = new Test(100000,null);
+        //Object s = new SerializerTest("易","",23,"理工");
+        byte[] buf = ProtostuffUtils.serializer(test);
         System.out.println(Arrays.toString((byte[]) buf));
-        SerializerTest test = ProtostuffUtils.deserializer((byte[]) buf,SerializerTest.class);
-        System.out.println(test);
+        Test test1 = ProtostuffUtils.deserializer((byte[]) buf,Test.class);
+        System.out.println(test1);
     }
 }

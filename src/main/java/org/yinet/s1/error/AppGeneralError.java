@@ -17,8 +17,9 @@ public class AppGeneralError extends Error{
     protected void executor() {
         this.logger.info(this.getMessage());
         Response response = new Response();
-        response.setId(100);
-        byte[] buf = ProtostuffUtils.serializer(this.getMsg());
+        ResponesErrorMsg responesErrorMsg = new ResponesErrorMsg(this.getMsg());
+        response.setId(404);
+        byte[] buf = ProtostuffUtils.serializer(responesErrorMsg);
         response.setDATA(buf);
         this.getChannel().writeAndFlush(response);
     }

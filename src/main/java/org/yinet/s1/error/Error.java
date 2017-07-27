@@ -11,14 +11,14 @@ public abstract class Error extends RuntimeException implements Runnable{
     protected Logger logger = Logger.getLogger(Error.class);
     private Channel channel;
     private String msg;
-
+    private ExecutorUtils executorUtils = new ExecutorUtils();
     public Error() {
     }
 
     public Error(Channel channel, String msg) {
         this.channel = channel;
         this.msg = msg;
-        ExecutorUtils.threadTask.execute(this);
+        executorUtils.threadTask.execute(this);
     }
 
     public Channel getChannel() {

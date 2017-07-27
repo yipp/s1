@@ -1,4 +1,4 @@
-package org.yinet.s1.logic.login.dao;
+package org.yinet.s1.logic.login.dto;
 
 
 import org.yinet.s1.net.tcp.model.RequestSerializer;
@@ -7,17 +7,17 @@ import org.yinet.s1.net.tcp.model.RequestSerializer;
  * 注册请求
  * Created by ppdashi on 2017/7/15.
  */
-public class RegisterDao implements RequestSerializer {
+public class RegisterDto implements RequestSerializer {
     private String account;
     private String password;
     private String name;
     private int age;
     private String gender;
 
-    public RegisterDao() {
+    public RegisterDto() {
     }
 
-    public RegisterDao(String account, String password, String name, int age, String gender) {
+    public RegisterDto(String account, String password, String name, int age, String gender) {
         this.account = account;
         this.password = password;
         this.name = name;

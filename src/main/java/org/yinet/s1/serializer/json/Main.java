@@ -1,9 +1,7 @@
 package org.yinet.s1.serializer.json;
 import com.alibaba.fastjson.JSON;
-import org.apache.log4j.LogSF;
 import org.apache.log4j.Logger;
-import org.w3c.dom.ls.LSException;
-import org.yinet.s1.dao.po.basic.Resources;
+import org.yinet.s1.dao.po.basic.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +28,7 @@ public class Main {
         /**json转对象*/
         Group group2 = JSON.parseObject(jsonString, Group.class);
         List<Integer> list = new ArrayList<>();
-        Resources resources = new Resources(1,2,1L,2L,3);
+        Resource resources = new Resource(1,2,1L,2L,3);
         list.add(1);
         list.add(2);
         list.add(3);

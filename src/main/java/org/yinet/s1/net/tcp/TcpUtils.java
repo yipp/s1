@@ -10,12 +10,13 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import org.yinet.s1.serializer.excel.ExcelUtils;
 
 /**
  * 网络链接
  */
 public class TcpUtils {
-    public void start(int port) throws Exception{
+    public static void start(int port){
         //配置服务器端的nio
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -34,7 +35,11 @@ public class TcpUtils {
                     });
             //绑定端口
             ChannelFuture f = b.bind(port).sync();
+            System.err.println("*****服务器启动*****");
             f.channel().closeFuture().sync();//等待服务端监听关闭
+        }catch (Exception e){
+            System.err.println("xxxx服务器启动失败xxxx");
+            e.printStackTrace();
         }finally {
             //优雅退出线程
             bossGroup.shutdownGracefully();

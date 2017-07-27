@@ -1,6 +1,5 @@
-package org.yinet.s1.logic.scenes.data;
+package org.yinet.s1.logic.banker.data;
 
-import org.springframework.stereotype.Service;
 
 /**
  * 作者：泡泡大湿
@@ -11,13 +10,13 @@ public class Banker {
     private int id;
     /**连续在庄次数*/
     private int bankerNumber;
-    /**庄家金币*/
-    private long money;
 
-    public Banker(int id, int bankerNumber, long money) {
+    public Banker() {
+    }
+
+    public Banker(int id, int bankerNumber) {
         this.id = id;
         this.bankerNumber = bankerNumber;
-        this.money = money;
     }
 
     public int getId() {
@@ -34,13 +33,5 @@ public class Banker {
 
     public void setBankerNumber(int bankerNumber) {
         this.bankerNumber = bankerNumber;
-    }
-
-    public long getMoney() {
-        return money;
-    }
-
-    public void setMoney(long money) {
-        this.money = money;
     }
 }

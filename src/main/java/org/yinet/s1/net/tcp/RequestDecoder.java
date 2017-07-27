@@ -7,7 +7,7 @@ import org.yinet.s1.net.tcp.model.Request;
 
 public class RequestDecoder extends ByteToMessageDecoder{
 	/**
-	 * 数据包的基本长度：包�?+1级协�?+数据长度�?
+	 * 数据包的基本长度：包头+id+数据长度
 	 * 每个协议都是�?个int类型的基本数据占4个字�?
 	 */
 	public static int BASE_LENGTH = 4+4+4;

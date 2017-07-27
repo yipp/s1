@@ -1,7 +1,9 @@
 package org.yinet.s1.logic.scenes.model.ScenesManager;
 
 import io.netty.channel.Channel;
-import org.yinet.s1.logic.scenes.dao.SettleAccountsDao;
+import org.yinet.s1.logic.scenes.dto.SettleAccountsDao;
+
+import java.util.Map;
 
 /**
  * Created by ppdashi on 2017/7/16.
@@ -46,9 +48,9 @@ public abstract class ScenesAbstract{
     /**添加牌面*/
     protected abstract void insert(int[] result);
     /**清除本场的下注数据*/
-    protected abstract void clear();
+    public abstract void clear();
     /**向客户端发送本场游戏结果和金币的加减*/
-    protected abstract void sendResult(Channel channel, SettleAccountsDao dao);
+    public abstract void sendResult(Map<Channel,Long> map);
     /**发牌-->比牌--->得到结果*/
-    protected abstract void doExecutor();
+    public abstract void doExecutor();
 }

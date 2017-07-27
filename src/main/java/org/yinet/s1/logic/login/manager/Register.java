@@ -9,10 +9,10 @@ import org.yinet.s1.dao.manager.SerializerPlayerModel;
 import org.yinet.s1.dao.mapper.PlayerMapper;
 import org.yinet.s1.dao.po.basic.BasicInfo;
 import org.yinet.s1.dao.po.basic.Player;
-import org.yinet.s1.dao.po.basic.Resources;
+import org.yinet.s1.dao.po.basic.Resource;
 import org.yinet.s1.error.AppGeneralError;
 import org.yinet.s1.error.coder.AppErrorCodes;
-import org.yinet.s1.logic.login.dao.RegisterDao;
+import org.yinet.s1.logic.login.dto.RegisterDto;
 import org.yinet.s1.serializer.excel.ExcelUtils;
 
 import java.util.ArrayList;
@@ -27,12 +27,12 @@ public class Register {
     @Autowired
     private BasicInfo basicInfo;
     @Autowired
-    private Resources resources;
+    private Resource resources;
     @Autowired
     private Player player;
     @Autowired
     private SerializerPlayerModel model;
-    public void process(Channel channel, RegisterDao register){
+    public void process(Channel channel, RegisterDto register){
         //1，到缓存中查找有没有这个玩家
         if(UserCache.accountMap.containsValue(register.getAccount()))
             throw new AppGeneralError(channel, AppErrorCodes.ACCOUNT_OCCUPATION);
@@ -41,9 +41,15 @@ public class Register {
             throw new AppGeneralError(channel, AppErrorCodes.ACCOUNT_OCCUPATION);
         //3，从excel表中取值初始化玩家基本数据
         CoreBasic coreBasic = (CoreBasic) ExcelUtils.getExcelBean("CoreBasic1");
+
         basicInfo.setAge(coreBasic.getAge());
         basicInfo.setHead(coreBasic.getHead());
         basicInfo.setHeadHint(coreBasic.getHeadHint());
+        basicInfo.setQq("xxx");
+        basicInfo.setPhone("xxxxx");
+        basicInfo.setName(register.getName());
+        basicInfo.setPassword(register.getPassword());
+        basicInfo.setUserName(register.getAccount());
 
         resources.setVip(coreBasic.getVip());
         resources.setRanking(coreBasic.getRanking());

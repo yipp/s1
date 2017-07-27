@@ -9,7 +9,7 @@ public class test {
         ApplicationContext ctx=null;
         ctx=new ClassPathXmlApplicationContext("applicationContext.xml");
         SerializerPlayerModel serializerPlayerMaodel = ctx.getBean(SerializerPlayerModel.class);
-        Player player = serializerPlayerMaodel.getPlayer("123456789");
+        Player player = serializerPlayerMaodel.getPlayer("12345678");
         System.err.println(player);
     }  
 }  

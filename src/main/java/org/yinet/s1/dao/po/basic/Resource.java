@@ -10,17 +10,17 @@ import java.util.concurrent.locks.ReentrantLock;
  * 角色资源
  */
 @Service
-public class Resources extends AbstractUserImpl {
+public class Resource extends AbstractUserImpl {
+    private int id;
     private int vip;
     private long diamond;//钻石
     private long gold;
     private int ranking;
-    private int id;
 
-    public Resources() {
+    public Resource() {
     }
 
-    public Resources( int id,int vip, long diamond, long gold, int ranking) {
+    public Resource(int id, int vip, long diamond, long gold, int ranking) {
         this.vip = vip;
         this.diamond = diamond;
         this.gold = gold;

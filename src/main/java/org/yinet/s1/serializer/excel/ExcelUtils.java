@@ -18,7 +18,7 @@ public class ExcelUtils {
         logger = Logger.getLogger(ExcelUtils.class);
     }
 
-    public static void main(String[] args) {
+    public static void init() {
         ClassPathExcelContext("src/main/resources/excel/CoreBasic.xlsx","org.yinet.s1.dao.excel.CoreBasic");
     }
 

@@ -1,6 +1,7 @@
 package org.yinet.s1.net.tcp.process;
 
 import io.netty.channel.Channel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.yinet.s1.S1ApplictionContext;
 import org.yinet.s1.executor.ExecutorUtils;

@@ -7,7 +7,8 @@ import org.yinet.s1.dao.mapper.PlayerMapper;
 import org.yinet.s1.dao.mapper.PlayerModel;
 import org.yinet.s1.dao.po.basic.BasicInfo;
 import org.yinet.s1.dao.po.basic.Player;
-import org.yinet.s1.dao.po.basic.Resources;
+import org.yinet.s1.dao.po.basic.Resource;
+import org.yinet.s1.serializer.excel.ExcelUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,20 +22,28 @@ public class SerializerPlayerModel {
     private PlayerMapper playerMapper;
     /**查找角色信息*/
     public Player getPlayer(int id){
-        PlayerModel playerModel = playerMapper.selectUser(id);
-        BasicInfo basicInfo = JSON.parseObject(playerModel.getBasicInfo(),BasicInfo.class);
-        Resources resources = JSON.parseObject(playerModel.getResources(),Resources.class);
-        List<Integer> frients = JSON.parseArray(playerModel.getFrients(),Integer.class);
-        String account = playerModel.getAccount();
-        return new Player(playerModel.getId(),basicInfo,resources,frients,account);
+        try {
+            PlayerModel playerModel = playerMapper.selectUser(id);
+            BasicInfo basicInfo = JSON.parseObject(playerModel.getBasicInfo(),BasicInfo.class);
+            Resource resources = JSON.parseObject(playerModel.getResources(), Resource.class);
+            List<Integer> frients = JSON.parseArray(playerModel.getFrients(),Integer.class);
+            String account = playerModel.getAccount();
+            return new Player(playerModel.getId(),basicInfo,resources,frients,account);
+        }catch (Exception e){
+            return null;
+        }
     }
     public Player getPlayer(String account){
-        PlayerModel playerModel = playerMapper.selectUserForAccount(account);
-        BasicInfo basicInfo = JSON.parseObject(playerModel.getBasicInfo(),BasicInfo.class);
-        Resources resources = JSON.parseObject(playerModel.getResources(),Resources.class);
-        List<Integer> frients = JSON.parseArray(playerModel.getFrients(),Integer.class);
-        String sqlAccount = playerModel.getAccount();
-        return new Player(playerModel.getId(),basicInfo,resources,frients,sqlAccount);
+        try {
+            PlayerModel playerModel = playerMapper.selectUserForAccount(account);
+            BasicInfo basicInfo = JSON.parseObject(playerModel.getBasicInfo(),BasicInfo.class);
+            Resource resources = JSON.parseObject(playerModel.getResources(), Resource.class);
+            List<Integer> frients = JSON.parseArray(playerModel.getFrients(),Integer.class);
+            String sqlAccount = playerModel.getAccount();
+            return new Player(playerModel.getId(),basicInfo,resources,frients,sqlAccount);
+        }catch (Exception e){
+            return null;
+        }
     }
     /**添加角色信息*/
     public void insertPlayer(Player player){

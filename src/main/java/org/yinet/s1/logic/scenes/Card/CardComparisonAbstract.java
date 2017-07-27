@@ -1,7 +1,7 @@
 package org.yinet.s1.logic.scenes.Card;
 
 import org.springframework.stereotype.Service;
-import org.yinet.s1.logic.scenes.manager.Scenes_01.CardData;
+import org.yinet.s1.logic.scenes.manager.Scenes_01.data.CardData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +118,7 @@ public abstract class CardComparisonAbstract {
 				}
 			}
 			if(sceneResult.get(0) == CardResult.CardType.SameAndObey.Id()||sceneResult.get(0) == CardResult.CardType.Obey.Id()) {//同花顺或者普通的顺子
-				if(card1[2].getCardNumber() == 14) CardData.scene01Result.add(-10);//1，2，3的顺子
+				if(card1[2].getCardNumber() == 14) sceneResult.add(CardResult.ResultType.Lose.Id());//1，2，3的顺子
 				else if(card0[2].getCardNumber() == 14 && card0[2].getCardNumber() != 14) {
 					sceneResult.add(CardResult.ResultType.Win.Id());//庄家是1，2，3玩家不是
 				}
@@ -170,8 +170,9 @@ public abstract class CardComparisonAbstract {
 
 	protected ComparisonObj[] getCard(int start,int end){
 		ComparisonObj[] objs = new ComparisonObj[3];
-		for(int i = start;i<end;i++)
+		for(int i = start;i<end;i++) {
 			objs[i - start] = CardData.scene01CardSet.get(i);
+		}
 		return objs;
 	}
 }

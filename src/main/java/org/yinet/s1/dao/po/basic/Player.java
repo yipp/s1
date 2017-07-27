@@ -11,14 +11,14 @@ import java.util.List;
 public class Player{
     private int id;
     private BasicInfo basicInfo;
-    private Resources resources;
+    private Resource resources;
     /**只存好友id*/
     private List<Integer> frients;
     private String account;
     public Player() {
     }
 
-    public Player(int id, BasicInfo basicInfo, Resources resources,List<Integer> frients,String account) {
+    public Player(int id, BasicInfo basicInfo, Resource resources, List<Integer> frients, String account) {
         this.id = id;
         this.basicInfo = basicInfo;
         this.resources = resources;
@@ -42,11 +42,11 @@ public class Player{
         this.basicInfo = basicInfo;
     }
 
-    public Resources getResources() {
+    public Resource getResources() {
         return resources;
     }
 
-    public void setResources(Resources resources) {
+    public void setResources(Resource resources) {
         this.resources = resources;
     }
 

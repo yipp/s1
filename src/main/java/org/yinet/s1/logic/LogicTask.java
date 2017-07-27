@@ -6,6 +6,8 @@ import org.yinet.s1.net.tcp.model.Response;
 import org.yinet.s1.net.tcp.model.ResponseSerializer;
 import org.yinet.s1.serializer.protostuffer.ProtostuffUtils;
 
+import java.util.Arrays;
+
 /**
  * 业务处理线程事件
  */
@@ -51,8 +53,8 @@ public abstract class LogicTask implements Runnable{
         executor();
     }
     protected void  response(){
-        if(msg instanceof ResponseSerializer)
-            throw new AppRecordError(this.channel,"回发数据序列化类型错误");
+//        if(msg instanceof ResponseSerializer)
+//            throw new AppRecordError(this.channel,"回发数据序列化类型错误");
         Response response = new Response();
         response.setId(id);
         if(this.msg == null)

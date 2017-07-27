@@ -10,4 +10,9 @@ public class AppErrorCodes {
     /**登陆*/
     public static final String NOT_ACCOUNT = "账号不存在，请先注册再登陆";
     public static final String PASSWORD_MISTAKE = "密码错误";
+
+    /**下庄成功*/
+    public static final String BANKER_DOWN = "下庄成功";
+    public static final String INSERT_BANKER_LIST = "已添加到上庄列表";
+    public static final String YOU_ARE_BANKER = "你已经是庄家";
 }

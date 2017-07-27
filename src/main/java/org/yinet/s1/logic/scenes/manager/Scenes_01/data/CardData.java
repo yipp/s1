@@ -1,4 +1,4 @@
-package org.yinet.s1.logic.scenes.manager.Scenes_01;
+package org.yinet.s1.logic.scenes.manager.Scenes_01.data;
 
 import io.netty.channel.Channel;
 import org.yinet.s1.logic.scenes.Card.ComparisonObj;
@@ -16,39 +16,52 @@ public abstract class CardData {
 	/**要发客户端的牌面*/
 	public static List<Integer> scene04Card = new ArrayList<>();
 	/**本剧四个玩家开了什么牌着或者赢*/
-	public static List<Integer> scene01Result = new ArrayList<>();//本剧四个玩家开了什么牌
 
 	public static Map<Channel, Long> cards1 = new HashMap<>();//第一推牌的玩家和钱
 	public static Map<Channel, Long> cards2 = new HashMap<>();//第2推牌的玩家
 	public static Map<Channel, Long> cards3 = new HashMap<>();//第3推牌的玩家
 	public static Map<Channel, Long> cards4 = new HashMap<>();//第4推牌的玩家
-	/**四堆牌的钱*/
-	public static long money01;
-	public static long money02;
-	public static long money03;
-	public static long money04;
+	/**四堆牌的下注总钱*/
+	public static long allMoney;
+
+	public static long a;
+	public static long b;
+	public static long c;
+	public static long d;
+
 	public static long jackpotScenes01 = 0L;
 	static Lock lock = new ReentrantLock();
 	public static void addMoney(long money,int index){
 		System.err.println(money);
 		lock.lock();
 		 try {
-			if(index == 1) money01 += money;
-			if(index == 2) money02 += money;
-			if(index == 3) money03 += money;
-			if(index == 4) money04 += money;
+			allMoney += money;
+
+			switch (index){
+				case 1:
+					a+=money;
+				case 2:
+					b+=money;
+					break;
+				case 3:
+					c+=money;
+					break;
+				case 4:
+					d+=money;
+					break;
+			}
 		} finally {
 			lock.unlock();
 		}
 	}
 	public static void resetMoney(){
-		System.err.println(money01+"---------");
 		lock.lock();
 		try {
-			money01 = 0;
-			money02 = 0;
-			money03 = 0;
-			money04 = 0;
+			allMoney = 0;
+			a=0;
+			b=0;
+			c=0;
+			d=0;
 		} finally {
 			lock.unlock();
 		}
