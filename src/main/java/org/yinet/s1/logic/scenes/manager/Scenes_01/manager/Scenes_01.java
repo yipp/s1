@@ -28,12 +28,13 @@ public class Scenes_01 extends ScenesAbstract{
     @Autowired
     private CardComparisonScenes01 cardComparisonScenes01;
     @Autowired
-    BankerUpScenes_01 scenes_01Banker;
+    Scenes_01Banker scenes_01Banker;
     @Override
     public void clear() {
+        System.out.println(scenes_01Banker.baner.size()+"------------");
         if(!scenes_01Banker.baner.isEmpty()) {
             int i = scenes_01Banker.baner.get(0).getBankerNumber();
-            if(i >= 10){
+            if(i >= 20){
                 scenes_01Banker.bankerDown(false);
             }else {
                 i++;
@@ -54,36 +55,39 @@ public class Scenes_01 extends ScenesAbstract{
         this.end = true;
     }
     @Override
-    public void sendResult(Map<Channel,Long> map) {
-        Response response = new Response();
+    public void sendResult() {
+        //庄家结算
+        if(!scenes_01Banker.baner.isEmpty()){
+            LoginDto dto = UserCache.playerId.get(scenes_01Banker.baner.get(0).getId());
+            long money = CardData.allMoney - scenes_01Banker.bankerMoney;
+            dto.getResource().addGold(money);
+        }
         long money = 0;
-System.err.println(scenes_01Banker.baner.size()+"****");
-System.err.println(scenes_01Banker.bankerList.size()+"xxx");
         if(!scenes_01Banker.baner.isEmpty()){
             money = UserCache.playerId.get(scenes_01Banker.baner.get(0).getId()).getResource().getGold();
         }
-        for (Map.Entry<Channel,Long> entry : map.entrySet()) {
-                SettleAccountsDao dto = new SettleAccountsDao(money,UserCache.playerMap.
-                        get(entry.getKey()).getResource().getGold() );
-                byte[] buf = ProtostuffUtils.serializer(dto);
-                response.setId(500);
-                response.setDATA(buf);
-System.err.println("我是**********");
-                entry.getKey().writeAndFlush(response);
+        for (Channel channel:Scenes_01.user){
+            Response response = new Response();
+            SettleAccountsDao dto = new SettleAccountsDao(money,UserCache.playerMap.
+                    get(channel).getResource().getGold() );
+            byte[] buf = ProtostuffUtils.serializer(dto);
+            response.setId(500);
+            response.setDATA(buf);
+            channel.writeAndFlush(response);
         }
     }
 
     /**
      * 牌面和结果
      */
-    private void sendResult(){
+    private void sendCardResult(){
+
        Response response = new Response();
         CardResultDto resultDto = new CardResultDto(CardData.scene04Card,cardComparisonScenes01.sceneResult);
         byte[] buf = ProtostuffUtils.serializer(resultDto);
         response.setDATA(buf);
         for (Channel channel:Scenes_01.user) {
             response.setId(505);
-            System.out.println(buf.length);
             channel.writeAndFlush(response);
         }
     }
@@ -96,23 +100,16 @@ System.err.println("我是**********");
         //得到结果 其中发给玩家的5副牌的数据在CardData的scene01CardSet里
         //比完之后玩家是得到的是散还是对子还是顺子的数据在CardComparisonScenes01的sceneResult里
         //发往客户端的牌面CardData.scene04Card
+        sendCardResult();
         //3，用户结算
-        if(cardComparisonScenes01.sceneResult.get(5)>0) {
+        if(cardComparisonScenes01.sceneResult.get(5)>0)
             settle(CardData.cards1, cardComparisonScenes01.sceneResult.get(1));
-            sendResult(CardData.cards1);
-        }
-        if(cardComparisonScenes01.sceneResult.get(6)>0) {
+        if(cardComparisonScenes01.sceneResult.get(6)>0)
             settle(CardData.cards2, cardComparisonScenes01.sceneResult.get(2));
-            sendResult(CardData.cards2);
-        }
-        if(cardComparisonScenes01.sceneResult.get(7)>0) {
+        if(cardComparisonScenes01.sceneResult.get(7)>0)
             settle(CardData.cards3, cardComparisonScenes01.sceneResult.get(3));
-            sendResult(CardData.cards3);
-        }
-        if(cardComparisonScenes01.sceneResult.get(8)>0) {
+        if(cardComparisonScenes01.sceneResult.get(8)>0)
             settle(CardData.cards4, cardComparisonScenes01.sceneResult.get(4));
-            sendResult(CardData.cards4);
-        }
         sendResult();
     }
     @Override
@@ -144,11 +141,6 @@ System.err.println("我是**********");
             System.out.println(money+"这个加了这么多钱啊");
             settleAccounts(userId,money);
         }
-        //庄家结算
-        if(!scenes_01Banker.baner.isEmpty()){
-            LoginDto dto = UserCache.playerId.get(scenes_01Banker.baner.get(0).getId());
-            long money = CardData.allMoney - scenes_01Banker.bankerMoney;
-            dto.getResource().addGold(money);
-        }
+
     }
 }

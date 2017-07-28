@@ -39,18 +39,17 @@ public abstract class BankerAbstract {
                 bankers = new Banker(player.getId(),0);
                 baner.add(bankers);
                 bankerList.remove(0);//从上庄列表中移除
-                send();
             }
+            send();
         }
     }
-    @Autowired
-    private Response response;
     private void send(){
+        Response response = new Response();
         LoginDto loginDto = null;
         if(!this.baner.isEmpty()){
             loginDto = UserCache.playerId.get(this.baner.get(0).getId());
         }
-        response.setId(7);
+        response.setId(6);
         if(loginDto != null) {
             byte[] buf = ProtostuffUtils.serializer(loginDto);
             response.setDATA(buf);
@@ -67,7 +66,14 @@ public abstract class BankerAbstract {
      */
     public void bankerDown(boolean bankerDown) {
         //同一个玩家连续在庄10把或者玩家主动下庄
-        if (bankers.getBankerNumber() >= 10 || bankerDown) {
+        System.out.println("我要下庄了");
+        if (baner.get(0).getBankerNumber() >= 20 || bankerDown) {
+            int id = baner.get(0).getId();
+            Response response = new Response();
+            response.setId(7);
+            response.setDATA(null);
+            System.out.println(UserCache.mapId.get(id));
+            UserCache.mapId.get(id).writeAndFlush(response);
            baner.clear();
         }
         bankerUp();

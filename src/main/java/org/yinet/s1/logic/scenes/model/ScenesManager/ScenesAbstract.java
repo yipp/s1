@@ -50,7 +50,7 @@ public abstract class ScenesAbstract{
     /**清除本场的下注数据*/
     public abstract void clear();
     /**向客户端发送本场游戏结果和金币的加减*/
-    public abstract void sendResult(Map<Channel,Long> map);
+    public abstract void sendResult();
     /**发牌-->比牌--->得到结果*/
     public abstract void doExecutor();
 }

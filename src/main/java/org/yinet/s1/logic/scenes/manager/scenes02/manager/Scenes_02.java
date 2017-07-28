@@ -59,7 +59,7 @@ public class Scenes_02 extends ScenesAbstract {
     }
 
     @Override
-    public void sendResult(Map<Channel, Long> map) {
+    public void sendResult() {
 
     }
 
@@ -73,14 +73,11 @@ public class Scenes_02 extends ScenesAbstract {
         //比完之后玩家是得到的是散还是对子还是顺子的数据在CardComparisonScenes01的sceneResult里
         //发往客户端的牌面CardData.scene04Card
         //3，用户结算
-        if(cardComparisonScenes02.sceneResult.get(2)>0) {
+        if(cardComparisonScenes02.sceneResult.get(2)>0)
             settle(CardData.cards1, cardComparisonScenes02.sceneResult.get(0));
-            sendResult(CardData.cards1);
-        }
-        if(cardComparisonScenes02.sceneResult.get(3)>0) {
+        if(cardComparisonScenes02.sceneResult.get(3)>0)
             settle(CardData.cards2, cardComparisonScenes02.sceneResult.get(1));
-            sendResult(CardData.cards2);
-        }
+        sendResult();
     }
     /**
      *
