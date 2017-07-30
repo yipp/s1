@@ -16,7 +16,6 @@ public class Action_10 extends LoginLogicTask {
     private BankerDownScenes_2 bankerDown;
     @Override
     public void executor() {
-        this.msg =  bankerDown.prossec(this.channel);
-        this.response();
+        bankerDown.prossec(this.channel);
     }
 }

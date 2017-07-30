@@ -4,13 +4,21 @@ import io.netty.channel.Channel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.yinet.s1.cache.core.UserCache;
+import org.yinet.s1.dao.po.basic.Resource;
 import org.yinet.s1.logic.login.dto.LoginDto;
 import org.yinet.s1.logic.scenes.Card.ComparisonObj;
+import org.yinet.s1.logic.scenes.dto.CardResultDto;
+import org.yinet.s1.logic.scenes.dto.SettleAccountsDao;
 import org.yinet.s1.logic.scenes.manager.Scenes_01.data.CardData;
+import org.yinet.s1.logic.scenes.manager.Scenes_01.manager.Scenes_01;
 import org.yinet.s1.logic.scenes.manager.scenes02.data.CardData02;
 import org.yinet.s1.logic.scenes.model.ScenesManager.ScenesAbstract;
+import org.yinet.s1.net.tcp.model.Response;
+import org.yinet.s1.serializer.protostuffer.ProtostuffUtils;
 
+import javax.xml.transform.Source;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +54,6 @@ public class Scenes_02 extends ScenesAbstract {
                 scenes_02Banker.baner.get(0).setBankerNumber(i);
             }
         }
-
         CardData02.scene02CardSet.clear();
         CardData02.scene02Card.clear();
         cardComparisonScenes02.sceneResult.clear();
@@ -54,29 +61,52 @@ public class Scenes_02 extends ScenesAbstract {
         scenes_02Banker.bankerMoney = 0;
         CardData02.cards1.clear();
         CardData02.cards2.clear();
+        CardData02.cards3.clear();
         timer = time;
         this.end = true;
     }
 
     @Override
     public void sendResult() {
-
+        //庄家结算
+        if(!scenes_02Banker.baner.isEmpty()){
+            LoginDto dto = UserCache.playerId.get(scenes_02Banker.baner.get(0).getId());
+            long money = CardData.allMoney - scenes_02Banker.bankerMoney;
+            dto.getResource().addGold(money);
+        }
+        long money = 0;
+        if(!scenes_02Banker.baner.isEmpty()){
+            money = UserCache.playerId.get(scenes_02Banker.baner.get(0).getId()).getResource().getGold();
+        }
+        for (Channel channel:Scenes_02.user){
+            Response response = new Response();
+            SettleAccountsDao dto = new SettleAccountsDao(money,UserCache.playerMap.
+                    get(channel).getResource().getGold() );
+            byte[] buf = ProtostuffUtils.serializer(dto);
+            response.setId(500);
+            response.setDATA(buf);
+            channel.writeAndFlush(response);
+        }
     }
 
     @Override
     public void doExecutor() {
         //1，发牌 场景1有5堆牌所以发15张牌
-        this.randomCommon(1,53,6);
+        this.randomCommon(1,53,2);
         //2，比牌
         cardComparisonScenes02.playerCard();
         //得到结果 其中发给玩家的5副牌的数据在CardData的scene01CardSet里
         //比完之后玩家是得到的是散还是对子还是顺子的数据在CardComparisonScenes01的sceneResult里
         //发往客户端的牌面CardData.scene04Card
+        sendCardResult();
         //3，用户结算
-        if(cardComparisonScenes02.sceneResult.get(2)>0)
-            settle(CardData.cards1, cardComparisonScenes02.sceneResult.get(0));
-        if(cardComparisonScenes02.sceneResult.get(3)>0)
-            settle(CardData.cards2, cardComparisonScenes02.sceneResult.get(1));
+        if(cardComparisonScenes02.sceneResult.get(0)>0)
+            settle(CardData02.cards1, 1);
+        if(cardComparisonScenes02.sceneResult.get(1)>0)
+            settle(CardData02.cards2, 1);
+        if(cardComparisonScenes02.sceneResult.get(0) == 0)
+            settle(CardData02.cards3, 6);
+
         sendResult();
     }
     /**
@@ -87,16 +117,31 @@ public class Scenes_02 extends ScenesAbstract {
     private void settle(Map<Channel,Long> map,int multiple){
         for (Map.Entry<Channel,Long> e:map.entrySet()) {
             int userId = UserCache.idMap.get(e.getKey());
-            long money = e.getValue()*multiple;
+            long money = e.getValue()*multiple+e.getValue();
             scenes_02Banker.bankerMoney += money;
             System.out.println(money+"这个加了这么多钱啊");
-            //settleAccounts(userId,money);
+            settleAccounts(userId,money);
+            System.out.println(money+"************");
         }
-        //庄家结算
-        if(!scenes_02Banker.baner.isEmpty()){
-            LoginDto dto = UserCache.playerId.get(scenes_02Banker.baner.get(0).getId());
-            long money = CardData.allMoney - scenes_02Banker.bankerMoney;
-            dto.getResource().addGold(money);
+    }
+    /**
+     * 结账
+     */
+    private void settleAccounts(int userId,long money){
+        Resource resources = UserCache.playerId.get(userId).getResource();
+        resources.addGold(money);
+    }
+    /**
+     * 牌面和结果
+     */
+    private void sendCardResult(){
+        Response response = new Response();
+        CardResultDto resultDto = new CardResultDto(CardData02.scene02Card,cardComparisonScenes02.sceneResult);
+        byte[] buf = ProtostuffUtils.serializer(resultDto);
+        response.setDATA(buf);
+        for (Channel channel: Scenes_02.user) {
+            response.setId(505);
+            channel.writeAndFlush(response);
         }
     }
 }

@@ -16,7 +16,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * 描述：
  */
 public class CardData02 {
-    /**本剧2个玩家的牌*/
     public static List<ComparisonObj> scene02CardSet = new ArrayList<>();
     /**要发客户端的牌面*/
     public static List<Integer> scene02Card = new ArrayList<>();
@@ -24,19 +23,30 @@ public class CardData02 {
 
     public static Map<Channel, Long> cards1 = new HashMap<>();//第一推牌的玩家和钱
     public static Map<Channel, Long> cards2 = new HashMap<>();//第2推牌的玩家
+    public static Map<Channel, Long> cards3 = new HashMap<>();//第3推牌的玩家(和)
     /**四堆牌的下注总钱*/
     public static long allMoney;
 
     public static long a;
     public static long b;
     public static long c;
-    public static long jackpotScenes01 = 0L;
     static Lock lock = new ReentrantLock();
     public static void addMoney(long money,int index){
         System.err.println(money);
         lock.lock();
         try {
+                allMoney += money;
 
+                switch (index){
+                    case 1:
+                        a+=money;
+                    case 2:
+                        b+=money;
+                        break;
+                    case 3:
+                        c+=money;
+                        break;
+                }
         } finally {
             lock.unlock();
         }
@@ -44,7 +54,10 @@ public class CardData02 {
     public static void resetMoney(){
         lock.lock();
         try {
-
+            allMoney = 0;
+            a=0;
+            b=0;
+            c=0;
         } finally {
             lock.unlock();
         }

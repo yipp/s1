@@ -31,7 +31,6 @@ public class Scenes_01 extends ScenesAbstract{
     Scenes_01Banker scenes_01Banker;
     @Override
     public void clear() {
-        System.out.println(scenes_01Banker.baner.size()+"------------");
         if(!scenes_01Banker.baner.isEmpty()) {
             int i = scenes_01Banker.baner.get(0).getBankerNumber();
             if(i >= 20){
@@ -136,7 +135,7 @@ public class Scenes_01 extends ScenesAbstract{
     private void settle(Map<Channel,Long> map,int multiple){
         for (Map.Entry<Channel,Long> e:map.entrySet()) {
             int userId = UserCache.idMap.get(e.getKey());
-            long money = e.getValue()*multiple;
+            long money = e.getValue()*multiple+e.getValue();
             scenes_01Banker.bankerMoney += money;
             System.out.println(money+"这个加了这么多钱啊");
             settleAccounts(userId,money);

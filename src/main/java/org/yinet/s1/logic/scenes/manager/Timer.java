@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.yinet.s1.S1ApplictionContext;
 import org.yinet.s1.executor.ExecutorUtils;
 import org.yinet.s1.logic.scenes.manager.Scenes_01.manager.Scenes_01;
+import org.yinet.s1.logic.scenes.manager.scenes02.manager.Scenes_02;
 import org.yinet.s1.net.tcp.model.Response;
 
 import java.util.concurrent.TimeUnit;
@@ -21,6 +22,8 @@ import java.util.concurrent.TimeUnit;
 public class Timer {
     @Autowired
     private Scenes_01 scenes_01;
+    @Autowired
+    private Scenes_02 scenes_02;
     private int timer_01 = 7;
     private boolean end_01 = true;
     public void run(){
@@ -41,6 +44,7 @@ public class Timer {
                 @Override
                 public void run() {
                     scenes_01.doExecutor();
+                    scenes_02.doExecutor();
                 }
             });
         }
@@ -49,6 +53,7 @@ public class Timer {
                 @Override
                 public void run() {
                     scenes_01.clear();
+                    scenes_02.clear();
                 }
             });
             end_01 = true;
@@ -59,11 +64,17 @@ public class Timer {
     private Response response;
     private void sendTimer(){
         for (Channel channel:Scenes_01.user) {
-            ByteBuf buf = Unpooled.buffer();
-            buf.writeShort(timer_01);
-            response.setId(200);
-            response.setDATA(buf.array());
-            channel.writeAndFlush(response);
+            massege(channel);
         }
+        for (Channel channel:Scenes_02.user) {
+            massege(channel);
+        }
+    }
+    private void massege(Channel channel){
+        ByteBuf buf = Unpooled.buffer();
+        buf.writeShort(timer_01);
+        response.setId(200);
+        response.setDATA(buf.array());
+        channel.writeAndFlush(response);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.yinet.s1.error.AppGeneralError;
 import org.yinet.s1.logic.scenes.manager.Scenes_01.manager.Scenes_01;
+import org.yinet.s1.logic.scenes.manager.scenes02.manager.Scenes_02;
 import org.yinet.s1.logic.scenes.model.ScenesLogicTask;
 import org.yinet.s1.net.tcp.model.Response;
 
@@ -28,7 +29,8 @@ public class Action_3 extends ScenesLogicTask{
             case 1:
                 Scenes_01.user.add(channel);//添加到扎金花场景
                 break;
-
+            case 2:
+                Scenes_02.user.add(channel);
             default:
                 break;
         }

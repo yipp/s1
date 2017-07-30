@@ -19,24 +19,13 @@ import org.yinet.s1.serializer.protostuffer.ProtostuffUtils;
 public class BankerDownScenes_2 extends Scenes_02Banker {
     @Autowired
     private Response response;
-    public LoginDto prossec(Channel channel){
-        this.bankerDown(true);
-        this.bankerUp();
-        LoginDto loginDto = null;
-        if(!this.baner.isEmpty()){
-            loginDto = UserCache.playerId.get(this.baner.get(0).getId());
-        }
-        response.setId(10);
-        if(loginDto != null) {
-            byte[] buf = ProtostuffUtils.serializer(loginDto);
-            response.setDATA(buf);
-        }else{
-            response.setDATA(null);
-        }
-        for (Channel channel1: Scenes_02.user) {
-            if(channel1 != channel)
-                channel1.writeAndFlush(response);
-        }
-        return loginDto;
+    @Autowired
+    private Scenes_02Banker scenes_02Banker;
+    public void prossec(Channel channel){
+        scenes_02Banker.bankerDown(true);
+        scenes_02Banker.bankerUp();
+        response.setId(11);
+        response.setDATA(null);
+        channel.writeAndFlush(response);
     }
 }

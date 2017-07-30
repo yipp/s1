@@ -21,6 +21,9 @@ public abstract class BankerAbstract {
    public List<Banker> baner = new ArrayList<>();
    public static long jackpot = 100000;//奖池
     public long bankerMoney = 0;
+    public int upId;
+    public int downId;
+    public List<Channel> user;
     /**
      * 上装列表
      */
@@ -49,14 +52,14 @@ public abstract class BankerAbstract {
         if(!this.baner.isEmpty()){
             loginDto = UserCache.playerId.get(this.baner.get(0).getId());
         }
-        response.setId(6);
+        response.setId(upId);
         if(loginDto != null) {
             byte[] buf = ProtostuffUtils.serializer(loginDto);
             response.setDATA(buf);
         }else{
             response.setDATA(null);
         }
-        for (Channel channel1: Scenes_01.user) {
+        for (Channel channel1: user) {
                 channel1.writeAndFlush(response);
         }
     }
@@ -70,7 +73,7 @@ public abstract class BankerAbstract {
         if (baner.get(0).getBankerNumber() >= 20 || bankerDown) {
             int id = baner.get(0).getId();
             Response response = new Response();
-            response.setId(7);
+            response.setId(downId);
             response.setDATA(null);
             System.out.println(UserCache.mapId.get(id));
             UserCache.mapId.get(id).writeAndFlush(response);

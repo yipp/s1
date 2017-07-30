@@ -15,7 +15,6 @@ public abstract class CardData {
 	public static List<ComparisonObj> scene01CardSet = new ArrayList<>();
 	/**要发客户端的牌面*/
 	public static List<Integer> scene04Card = new ArrayList<>();
-	/**本剧四个玩家开了什么牌着或者赢*/
 
 	public static Map<Channel, Long> cards1 = new HashMap<>();//第一推牌的玩家和钱
 	public static Map<Channel, Long> cards2 = new HashMap<>();//第2推牌的玩家
@@ -29,7 +28,6 @@ public abstract class CardData {
 	public static long c;
 	public static long d;
 
-	public static long jackpotScenes01 = 0L;
 	static Lock lock = new ReentrantLock();
 	public static void addMoney(long money,int index){
 		System.err.println(money);
