@@ -110,7 +110,7 @@ public class Scenes_01 extends ScenesAbstract{
         if(cardComparisonScenes01.sceneResult.get(8)>0)
             settle(CardData.cards4, cardComparisonScenes01.sceneResult.get(4));
         sendResult();
-    }
+   }
     @Override
     protected void insert(int[] result) {
         for (int i : result) {

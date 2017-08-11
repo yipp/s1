@@ -47,7 +47,7 @@ public class Scenes_02 extends ScenesAbstract {
     public void clear() {
         if(!scenes_02Banker.baner.isEmpty()) {
             int i = scenes_02Banker.baner.get(0).getBankerNumber();
-            if(i >= 10){
+            if(i >= 20){
                 scenes_02Banker.bankerDown(false);
             }else {
                 i++;
@@ -68,10 +68,11 @@ public class Scenes_02 extends ScenesAbstract {
 
     @Override
     public void sendResult() {
+
         //庄家结算
         if(!scenes_02Banker.baner.isEmpty()){
             LoginDto dto = UserCache.playerId.get(scenes_02Banker.baner.get(0).getId());
-            long money = CardData.allMoney - scenes_02Banker.bankerMoney;
+            long money = CardData02.allMoney - scenes_02Banker.bankerMoney;
             dto.getResource().addGold(money);
         }
         long money = 0;
@@ -119,9 +120,7 @@ public class Scenes_02 extends ScenesAbstract {
             int userId = UserCache.idMap.get(e.getKey());
             long money = e.getValue()*multiple+e.getValue();
             scenes_02Banker.bankerMoney += money;
-            System.out.println(money+"这个加了这么多钱啊");
             settleAccounts(userId,money);
-            System.out.println(money+"************");
         }
     }
     /**

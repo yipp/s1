@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.yinet.s1.S1ApplictionContext;
 import org.yinet.s1.executor.ExecutorUtils;
 import org.yinet.s1.logic.scenes.manager.Scenes_01.manager.Scenes_01;
+import org.yinet.s1.logic.scenes.manager.Scenes_03.manager.Scenes_03Manager;
 import org.yinet.s1.logic.scenes.manager.scenes02.manager.Scenes_02;
 import org.yinet.s1.net.tcp.model.Response;
 
@@ -24,6 +25,8 @@ public class Timer {
     private Scenes_01 scenes_01;
     @Autowired
     private Scenes_02 scenes_02;
+    @Autowired
+    private Scenes_03Manager scenes_03;
     private int timer_01 = 7;
     private boolean end_01 = true;
     public void run(){
@@ -45,6 +48,7 @@ public class Timer {
                 public void run() {
                     scenes_01.doExecutor();
                     scenes_02.doExecutor();
+                    scenes_03.doExecutor();
                 }
             });
         }
@@ -54,21 +58,22 @@ public class Timer {
                 public void run() {
                     scenes_01.clear();
                     scenes_02.clear();
+                    scenes_03.clear();
                 }
             });
             end_01 = true;
-            timer_01 = 8;
+            timer_01 = 9;
         }
     }
     @Autowired
     private Response response;
     private void sendTimer(){
-        for (Channel channel:Scenes_01.user) {
+        for (Channel channel:Scenes_01.user)
             massege(channel);
-        }
-        for (Channel channel:Scenes_02.user) {
+        for (Channel channel:Scenes_02.user)
             massege(channel);
-        }
+        for (Channel channel:scenes_03.getUser())
+            massege(channel);
     }
     private void massege(Channel channel){
         ByteBuf buf = Unpooled.buffer();

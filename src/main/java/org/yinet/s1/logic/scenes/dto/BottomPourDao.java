@@ -15,7 +15,7 @@ public class BottomPourDao  implements RequestSerializer{
     public BottomPourDao() {
     }
 
-    public BottomPourDao(int position, int money) {
+    public BottomPourDao(int position, long money) {
         this.position = position;
         this.money = money;
     }

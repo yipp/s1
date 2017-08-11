@@ -24,7 +24,7 @@ public class BankerDownScenes_2 extends Scenes_02Banker {
     public void prossec(Channel channel){
         scenes_02Banker.bankerDown(true);
         scenes_02Banker.bankerUp();
-        response.setId(11);
+        response.setId(10);
         response.setDATA(null);
         channel.writeAndFlush(response);
     }

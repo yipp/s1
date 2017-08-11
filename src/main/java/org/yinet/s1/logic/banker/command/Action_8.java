@@ -22,14 +22,13 @@ import java.util.List;
 @Repository("action_8")
 public class Action_8  extends LoginLogicTask {
     @Autowired
-    private BankerListScenes_01 banker;
-    @Autowired
-    private Response response;
+    private Scenes_01Banker scenes_01Banker;
     @Override
     public void executor() {
-        if(!banker.bankerList.isEmpty()){
+        System.out.println(scenes_01Banker.bankerList.size()+"xxxxxxxxxxxxxxxxxxx");
+        if(!scenes_01Banker.bankerList.isEmpty()){
             List<LoginDto> arr = new ArrayList<>();
-            for (int i:banker.bankerList ) {
+            for (int i:scenes_01Banker.bankerList ) {
                 LoginDto dto = UserCache.playerId.get(i);
                 arr.add(dto);
             }

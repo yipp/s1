@@ -34,7 +34,6 @@ public abstract class CardData {
 		lock.lock();
 		 try {
 			allMoney += money;
-
 			switch (index){
 				case 1:
 					a+=money;

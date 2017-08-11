@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * 作者：---->泡泡大湿<-----
  * 时间：********2017/7/30******
- * 描述：场景2下注
+ * 描述：场景3下注
  */
 @Repository("action_13")
 public class Action_13 extends ScenesLogicTask {
